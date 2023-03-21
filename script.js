@@ -1,30 +1,42 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyBt4xZRztfnCQIKZnozpayf31fl3NjFDJ0",
-    authDomain: "contactform-6b252.firebaseapp.com",
-    databaseURL: "https://contactform-6b252-default-rtdb.firebaseio.com",
-    projectId: "contactform-6b252",
-    storageBucket: "contactform-6b252.appspot.com",
-    messagingSenderId: "776533989657",
-    appId: "1:776533989657:web:e8927bc122cabf5ba00d88",
-    measurementId: "G-CL8TKW0R91"
+    apiKey: "AIzaSyDGMNuhpl6XyIxPZIogEW4XA-GCbOkxdog",
+    authDomain: "contactform-93a8c.firebaseapp.com",
+    databaseURL: "https://contactform-93a8c-default-rtdb.firebaseio.com",
+    projectId: "contactform-93a8c",
+    storageBucket: "contactform-93a8c.appspot.com",
+    messagingSenderId: "479513521711",
+    appId: "1:479513521711:web:0abac56c39a12b107360da"
   };
 
-//   initializing firebase
-firebaseConfig.initializeApp(firebaseConfig);
+// initialize the app
+firebase.initializeApp(firebaseConfig);
 
-// reference the database
-var contactFormDb= firebase.database().ref('contactForm');
+// Reference to the database
+var contactFormDb=firebase.database().ref('ContactForm');
 
-document.getElementById('contactForm').addEventListener('submit', submitForm)
+document.getElementById('contactForm').addEventListener("submit",submitForm)
 
 function submitForm(e){
     e.preventDefault();
-    var name=getelementVal('name')
-    var email=getelementVal('email')
-    var message=getelementVal('message')
+    var name=getElementVal('name')
+    var email=getElementVal('email')
+    var message=getElementVal('message')
+
+    saveMessage(name,email,message);
+    
 
 }
-const getelementVal=(id)=>{
+const saveMessage=(name,email,message)=>{
+    var newCF=contactFormDb.push()
+
+    newCF.set({
+        name:name,
+        email:email,
+        message:message,
+    })
+
+}
+
+const getElementVal=(id)=>{
     return document.getElementById(id).value;
-    
 }
