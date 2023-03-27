@@ -22,23 +22,24 @@ function signup(){
     //     alert("email is not valid!")
     //     return;
     // }
-
-    if(validate_password(password)==false){
-        alert("password length is less than 6")
-        return;
-
-    }
-
     if(validate_field(name)==false|| validate_field(email)==false||validate_password(password)==false||validate_field(confirmpassword)==false){
         alert("one or more fields are empty!!")
         return;
     }
 
+    if(validate_password(password)==false|| validate_email(email)==false){
+        alert("Email or Password is not valid !!")
+        return;
+
+    }
+
+    
+
     if(confirm_password(password,confirmpassword)==false){
         alert("your passwords are not matching!!")
         return;
     }
-    auth.createUserwithemailandPassword(email,password)
+    auth.createUserWithEmailandPassword(email,password)
     .then(function(){
         var user=auth.currentUser
         var database_ref= database.ref()
@@ -46,10 +47,10 @@ function signup(){
         var user_data={
             email:email,
             name:name,
-            last_login:Date.now()
+            last_login:Date.now(),
         }
 
-        database_ref.child('users/'+user.uid).set(user_data)
+        database_ref.child('users/' +user.uid).set(user_data)
         alert("user created !")
 
     })
@@ -62,7 +63,7 @@ function signup(){
 }
 
 function validate_email(){
-    exp=/^[^@]+@\w+(\.\w)+\w$/
+    exp=/^[^@]+@\w+(\.\w+)+\w$/
     if(exp.test(email)==true){
         return true
     }
