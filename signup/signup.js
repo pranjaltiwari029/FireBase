@@ -7,7 +7,7 @@ const firebaseConfig = {
     appId: "1:390664985962:web:a8c3a4d8b63222ce821913"
 };
 
-const app=initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 const auth=firebase.auth()
 const database=firebase.database()
@@ -18,10 +18,10 @@ function signup(){
     password=document.getElementById('password').value
     confirmpassword=document.getElementById('confirmpassword').value
 
-    if(validate_email(email)==false){
-        alert("email is not valid!")
-        return;
-    }
+    // if(validate_email(email)==false){
+    //     alert("email is not valid!")
+    //     return;
+    // }
 
     if(validate_password(password)==false){
         alert("password length is less than 6")
@@ -38,10 +38,31 @@ function signup(){
         alert("your passwords are not matching!!")
         return;
     }
+    auth.createUserwithemailandPassword(email,password)
+    .then(function(){
+        var user=auth.currentUser
+        var database_ref= database.ref()
+
+        var user_data={
+            email:email,
+            name:name,
+            last_login:Date.now()
+        }
+
+        database_ref.child('users/'+user.uid).set(user_data)
+        alert("user created !")
+
+    })
+    .catch(function(error){
+        var error_code=error.code
+        var error_message=error.message
+
+        alert(error_message)
+    })
 }
 
 function validate_email(){
-    exp=/^[^@]+@\w+(\.\w)+\w$/;
+    exp=/^[^@]+@\w+(\.\w)+\w$/
     if(exp.test(email)==true){
         return true
     }
